@@ -1,11 +1,13 @@
 package com.tatarenkova.conf;
 
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class SpringWebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class[] getServletConfigClasses() {
-        return new Class[] { WebConfig.class };
+        return new Class[] {};
     }
 
     @Override
@@ -15,6 +17,8 @@ public class SpringWebInitializer extends AbstractAnnotationConfigDispatcherServ
 
     @Override
     protected Class[] getRootConfigClasses() {
-        return new Class[] {};
+        return new Class[] { WebConfig.class };
     }
+
+
 }
