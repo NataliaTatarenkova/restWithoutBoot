@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping("/{userId}/addTasks")
     public ResponseEntity<String> addTasks(@RequestBody List<Long> taskIds, @PathVariable Long userId) {
-        List<Task> tasks = taskIds.stream().map(e -> (Task) taskService.findById(e)).toList();
+        List<Task> tasks = taskIds.stream().map(taskService::findById).toList();
         for (Task task : tasks) {
             task.setUserId(userId);
         }

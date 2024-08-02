@@ -23,7 +23,7 @@ public class TaskService {
         taskDAO.deleteById(id);
     }
 
-    public Object findById(Long id) {
+    public Task findById(Long id) {
         return taskDAO.findById(id);
     }
 }
