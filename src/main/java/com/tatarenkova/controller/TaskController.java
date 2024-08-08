@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.tatarenkova.entity.Task;
 import com.tatarenkova.service.TaskService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,13 +29,13 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTask(@PathVariable Long id) {
+    public String deleteTask(@PathVariable("id") Long id) {
         taskService.deleteById(id);
         return "Задача успешно удалена";
     }
 
-    @GetMapping("{id}")
-    public Task getTask(@PathVariable Long id) {
+    @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Task getTask(@PathVariable("id") Long id) {
         return taskService.findById(id);
     }
 }

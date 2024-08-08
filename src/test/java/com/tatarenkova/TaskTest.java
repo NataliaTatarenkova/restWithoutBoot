@@ -5,15 +5,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Collections;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tatarenkova.conf.HibernateConfig;
 import com.tatarenkova.conf.WebConfig;
+import com.tatarenkova.entity.Task;
 import com.tatarenkova.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,8 @@ import org.springframework.web.context.WebApplicationContext;
 @ContextConfiguration(classes = { WebConfig.class, HibernateConfig.class})
 @WebAppConfiguration
 @ActiveProfiles(value = "dev")
-public class UserTest {
+public class TaskTest {
+
     @Autowired
     private WebApplicationContext webApplicationContext;
     private MockMvc mockMvc;
@@ -44,66 +45,29 @@ public class UserTest {
     }
 
     @Test
-    public void getUserById() throws Exception {
-        System.out.println("ddd");
-        mockMvc.perform(get("/users/{id}", 1))
-                .andDo(print())
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.name", is("Иван")));
-    }
-
-    @Test
-    public void getUserByIdNotFound() throws Exception {
-        System.out.println("ddd");
-        mockMvc.perform(get("/users/{id}", -2))
-               .andDo(print())
-               .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void getUserAll() throws Exception {
-        mockMvc.perform(get("/users/all"))
+    public void getTaskById() throws Exception {
+        mockMvc.perform(get("/tasks/{id}", 1L))
                .andDo(print())
                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("Иван")));
+               .andExpect(jsonPath("$.name", is("Task1")));
     }
 
     @Test
-    public void userSave() throws Exception {
-        mockMvc.perform(post("/users/save")
-                       .content(objectMapper.writeValueAsString(User.builder().mail("newMail@mail.com").name("NewName").build()))
+    public void deleteTaskById() throws Exception {
+        mockMvc.perform(delete("/tasks/{id}", 1L))
+               .andDo(print())
+               .andExpect(status().isOk());
+    }
+
+    @Test
+    public void createTask() throws Exception {
+        mockMvc.perform(post("/tasks", 1L)
+                       .content(objectMapper.writeValueAsString(Task.builder().creationDate(new Date()).deadLine(new Date()).name("Task2").description("descr").build()))
                        .contentType(MediaType.APPLICATION_JSON_VALUE)
                        .accept(MediaType.APPLICATION_JSON_VALUE))
                .andDo(print())
                .andExpect(status().isOk());
     }
 
-    @Test
-    public void userUpdate() throws Exception {
-        mockMvc.perform(post("/users/update")
-                       .content(objectMapper.writeValueAsString(User.builder().id(1L).mail("newMail@mail.com").name("NewName").build()))
-                       .contentType(MediaType.APPLICATION_JSON_VALUE)
-                       .accept(MediaType.APPLICATION_JSON_VALUE))
-               .andDo(print())
-               .andExpect(status().isOk());
-    }
 
-    @Test
-    public void userDelete() throws Exception {
-        mockMvc.perform(delete("/users/{id}", 1))
-               .andDo(print())
-               .andExpect(status().isOk());
-    }
-
-
-    @Test
-    public void userAddTask() throws Exception {
-        mockMvc.perform(post("/users/{userId}/addTasks", 1)
-                       .content(objectMapper.writeValueAsString(Collections.singletonList(1)))
-                       .contentType(MediaType.APPLICATION_JSON_VALUE)
-                       .accept(MediaType.APPLICATION_JSON_VALUE))
-               .andDo(print())
-               .andExpect(status().isOk());
-               //.andExpect(content().string("Для пользователя Иван были добавлены следующие задачи [Task1]"));
-    }
 }

@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Task2" uuid="b89d758e-4dfc-4edd-9bbf-299a680ac9e2">
+    <data-source source="LOCAL" name="Task2.mv" uuid="b89d758e-4dfc-4edd-9bbf-299a680ac9e2">
       <driver-ref>h2.unified</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.h2.Driver</jdbc-driver>
-      <jdbc-url>jdbc:h2:C:\Users\tatarenkova\Desktop\db\Task2</jdbc-url>
+      <jdbc-url>jdbc:h2:file:C:\Users\tatarenkova\Desktop\db\Task2.mv</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="Postgres" uuid="514adbdf-63b1-4b68-b508-6f584bc86e77">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql:///postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

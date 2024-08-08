@@ -1,5 +1,7 @@
 package com.tatarenkova.controller;
 
+import static java.util.Objects.isNull;
+
 import java.util.List;
 
 import com.tatarenkova.entity.Task;
@@ -27,7 +29,7 @@ public class UserController {
     private final TaskService taskService;
 
     @PostMapping("/{userId}/addTasks")
-    public ResponseEntity<String> addTasks(@RequestBody List<Long> taskIds, @PathVariable Long userId) {
+    public ResponseEntity<String> addTasks(@RequestBody List<Long> taskIds, @PathVariable("userId") Long userId) {
         List<Task> tasks = taskIds.stream().map(taskService::findById).toList();
         for (Task task : tasks) {
             task.setUserId(userId);
@@ -39,8 +41,12 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public User getUserById(@PathVariable("id") Long id) {
-        return userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+        User user =  userService.getUserById(id);
+        if (isNull(user)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
     }
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getUsers() {
@@ -60,7 +66,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public String updateUser(@PathVariable("id")  Long id) {
+    public String deleteUser(@PathVariable("id")  Long id) {
         userService.deleteUser(id);
         return "Deleted";
     }

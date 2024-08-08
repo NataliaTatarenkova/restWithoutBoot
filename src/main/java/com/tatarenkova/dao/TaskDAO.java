@@ -2,6 +2,8 @@ package com.tatarenkova.dao;
 
 import com.tatarenkova.entity.Task;
 import com.tatarenkova.service.TaskService;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,13 @@ public class TaskDAO {
     }
 
     public Task findById(Long id) {
-        return sessionFactory.getCurrentSession().get(Task.class, id);
+        Session session;
+        try {
+            session = sessionFactory.getCurrentSession();
+        } catch (HibernateException e) {
+            session = sessionFactory.openSession();
+        }
+        return session.get(Task.class, id);
     }
 }
+

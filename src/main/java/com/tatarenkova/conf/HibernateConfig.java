@@ -51,7 +51,7 @@ public class HibernateConfig {
     public DataSource dataSourceDev() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:tcp:C:/Users/tatarenkova/Desktop/db/Task2");
+        dataSource.setUrl("jdbc:h2:file:C:/Users/tatarenkova/Desktop/db/Task2.mv");
         dataSource.setUsername("admin");
         dataSource.setPassword("admin");
 
@@ -64,7 +64,8 @@ public class HibernateConfig {
         Properties properties = new Properties();
         properties.put("hibernate.show_sql", true);
         properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-        properties.put("hibernate.hbm2ddl.auto", "create");
+        properties.put("jakarta.persistence.schema-generation.database.action", "drop-and-create");
+        properties.put("jakarta.persistence.sql-load-script-source", "data.sql");
 
         return properties;
     }
